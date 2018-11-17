@@ -1,48 +1,59 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Snake Game</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
 
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <title>Snake Game</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-  </head>
-  <body>
-    <div class="container">
-      <h1>Snake Game with Search Algorithms</h1>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <label class="input-group-text" for="inputGroupSelect01">Options</label>
-        </div>
-        <select class="custom-select" id="inputSearchAlgorithm">
-          <option value="BFS" selected>BFS</option>
-          <option value="DFS">DFS</option>
-          <option value="A">A*</option>
-        </select>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+  <script src="/js/snake.js""></script>
+
+
+</head>
+
+<body onload="init()">
+  <div class="container">
+    <h1>Snake Game with Search Algorithms</h1>
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect01">Options</label>
       </div>
-      <button type="button" class="btn btn-success" id="start">Start</button>
-      <button type="button" class="btn btn-danger" id="stop">Stop</button>
-      <div id="snake"></div>
-
-
-
+      <select class="custom-select" id="search" onchange="change_search();">
+        <option>BFS</option>
+        <option>DFS</option>
+        <option>A* - H1</option>
+        <option>A* - H2</option>
+        <option>A* - (H1+H2)/2</option>
+      </select>
     </div>
-    <!-- Optional JavaScript -->
-    <!-- <script src="/js/snake.js""></script> -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="/js/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="/js/bootstrap.min.js"></script>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/addons/p5.dom.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/addons/p5.sound.js"></script>
+    <div>
+      <input type="button" value="Start" onclick="start();">
+      <input type="button" value="Stop" onclick="stop();">
+    </div>
 
-    <script type="text/javascript" src="/js/sketch.js"></script>
-  </body>
+    <div id="stats" style="float:right;width:300px;">
+      Food Eaten: <span id="food_val"></span><br>
+      Moves: <span id="moves_val"></span><br>
+      Average Moves: <span id="avg_moves_val"></span><br>
+      Average Nodes Processed: <span id="avg_nodes_val"></span><br>
+    </div>
+
+    <div id="snake">
+      <canvas id="canvas" width="300" height="300"></canvas>
+    </div>
+  </div>
+  <!-- Optional JavaScript -->
+
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+</body>
+
 </html>
