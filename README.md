@@ -1,1 +1,0 @@
-# snake-search-algorithms
