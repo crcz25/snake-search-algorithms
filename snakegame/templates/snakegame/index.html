@@ -1,0 +1,60 @@
+{% load static %}
+{% load pwa %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% progressive_web_app_meta %}
+    <meta charset="UTF-8">
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <script src="{% static 'snakegame/snake.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'snakegame/style.css' %}">
+</head>
+<body onload="init()">
+<div class="container">
+    <h1>Snake Search Algorithms Comparison</h1>
+
+    <div class="row input-group">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Options</label>
+        </div>
+        <select class="custom-select" id="search" onchange="change_search();">
+            <option>BFS</option>
+            <option>DFS</option>
+            <option>A*</option>
+        </select>
+    </div>
+    <div class="row">
+        <input type="button" class="btn btn-primary" value="Start" onclick="start();">
+        <input type="button" class="btn btn-danger" value="Stop" onclick="stop();">
+    </div>
+    <div class="row">
+        <div class="col" id="stats">
+            Food Eaten: <span id="food_val"></span><br>
+            Moves: <span id="moves_val"></span><br>
+            Nodes: <span id="nodes_val"></span><br>
+            Average Moves: <span id="avg_moves_val"></span><br>
+            Average Nodes Processed: <span id="avg_nodes_val"></span><br>
+            Total Nodes: <span id="total_val"></span><br>
+        </div>
+        <div class="col">
+            <canvas id="canvas" width="300" height="300"></canvas>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+</html>
