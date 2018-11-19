@@ -120,19 +120,23 @@ function refresh_view(data) {
                     }
                     if (data.squares[i][j] == 4 + config.snake_length) {
                         //tail
-                        ctx.fillStyle = "#0000A0";
+                        ctx.fillStyle = "#0D3723";
                         ctx.beginPath();
                         ctx.rect(i * config.square_size, j * config.square_size, config.square_size, config.square_size);
                         ctx.closePath();
                         ctx.fill();
+                        ctx.fillStyle = "#000";
+                        ctx.stroke();
                         break;
                     }
                     //body
-                    ctx.fillStyle = "#800080";
+                    ctx.fillStyle = "#0D3723";
                     ctx.beginPath();
                     ctx.rect(i * config.square_size, j * config.square_size, config.square_size, config.square_size);
                     ctx.closePath();
                     ctx.fill();
+                    ctx.fillStyle = "#000";
+                    ctx.stroke();
                     break;
             }
         }

@@ -109,6 +109,20 @@ function run() {
     config.runTimeout = setTimeout(run, 100);//need to wait a bit, otherwise CPU get overloaded and browser becomes unresponsive.
 }
 
+//place the snake on the grid.
+function place_snake(length) {
+    var middle_x = Math.floor(config.grid_size / 2);
+    var middle_y = Math.floor(config.grid_size / 2);
+    var snake = new Array(length);
+    while (length) {
+        squares[middle_x + length][middle_y] = 4 + length;
+        snake[length - 1] = new Point(middle_x + length, middle_y);
+        length--;
+    }
+    return snake;
+}
+
+
 //Breadth First Search
 function findpath_bfs() {
     postMessage("running BFS");
@@ -137,10 +151,12 @@ function findpath_bfs() {
         // Check if node is food
         if (squares[n.point.x][n.point.y] == 2) {
             //if we have reached food, climb up the tree until the root to obtain path
+
             do {
                 moves.unshift(n.point);
-                if (squares[n.point.x][n.point.y] == 0)
+                if (squares[n.point.x][n.point.y] == 0) {
                     squares[n.point.x][n.point.y] = 1;
+                }
                 n = n.parent;
             } while (n.parent != null)
             break;
@@ -255,7 +271,8 @@ function findpath_a(search_type) {
                 if (squares[n.point.x][n.point.y] == 0)
                     squares[n.point.x][n.point.y] = 1;
                 n = n.parent;
-            } while (n.parent != null)
+            } while (n.parent != null);
+
             break;
         }
         // Add current node to path
@@ -321,13 +338,8 @@ function in_queue(queue, aNode) {
 function heuristic_estimate(point1, point2, search_type) {
     switch (search_type) {
         case "H1":
-            return heuristic_estimate_1(point1, point2);
+            return Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2));
     }
-}
-
-//First heuristic: calculate the direct path to the food. This will usually be less than actual, because it's a slant distance.
-function heuristic_estimate_1(point1, point2) {
-    return Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2));
 }
 
 
@@ -366,8 +378,12 @@ function move(new_head) {
     }
     //if we are at a food square, put a new food on the grid, and keep stats.
     if (squares[new_head.x][new_head.y] == 2) {
+        console.log("ENCUENTRA COMIDA", new_head.x, new_head.y);
+        snake.unshift(new Point(new_head.x, new_head.y));
+        console.log(snake);
+
         place_food();
-        stats.food++
+        stats.food++;
     }
 
     //clear the tail
@@ -411,6 +427,8 @@ function place_snake(length) {
     }
     return snake;
 }
+
+
 
 //randomly place obstacles on the grid.
 function place_obstacles(count) {
