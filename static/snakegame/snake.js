@@ -20,7 +20,7 @@ var stats = {
     avg_nodes: 0
 };
 
-var food = 5;
+var food = 20;
 
 
 function init() {

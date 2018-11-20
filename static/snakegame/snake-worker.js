@@ -80,7 +80,7 @@ onmessage = function (event) {
 function run() {
     //console.log(config.search)
     //stop at 100 food, for statistical purposes:
-    if (stats.food >= 400) {
+    if (stats.food >= 100) {
         clearTimeout(config.runTimeout);
         return;
     }
@@ -266,11 +266,15 @@ function findpath_a(search_type) {
         // Check if node is food
         if (squares[n.point.x][n.point.y] == 2) {
             //if we have reached food, climb up the tree until the root to obtain path
+            var u = 0;
             do {
+                console.l
                 moves.unshift(n.point);
                 if (squares[n.point.x][n.point.y] == 0)
                     squares[n.point.x][n.point.y] = 1;
                 n = n.parent;
+                u++;
+                console.log('UU', u)
             } while (n.parent != null);
 
             break;
