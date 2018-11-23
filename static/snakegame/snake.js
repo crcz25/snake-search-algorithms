@@ -9,7 +9,6 @@ var config = {
     number_obstacles : 100,
     square_size : 10,
     snake_length : 4,
-    search :'BFS',
     runTimeout : 0
 };
 var stats = {
@@ -19,9 +18,7 @@ var stats = {
     avg_moves: 0,
     avg_nodes: 0
 };
-
-var food = 20;
-
+let itr = 20;
 
 function init() {
     ctx = document.getElementById('canvas').getContext("2d");
@@ -36,10 +33,10 @@ function init() {
 
 var total_nodes = 0;
 function refresh_view(data) {
-    if (data.stats.food >= food) {
+    if (data.stats.food >= itr) {
         stop();
     }
-    total_nodes += stats.nodes
+    total_nodes += stats.nodes;
 
     //output some stats about our performance
     stats.moves = data.stats.moves;
@@ -164,8 +161,8 @@ worker.onerror = function (error) {
 function start() {
     message.do = 'start';
     worker.postMessage(message);
-    begin = new Date();
-    console.log('Start', begin)
+     begin = new Date();
+     console.log('Start', begin)
 }
 
 //stop the worker. It will be 'paused' and wait until it's told to start again. State will be maintained
@@ -173,10 +170,12 @@ function stop() {
     var message = new Object();
     message.do = 'stop';
     worker.postMessage(message);
+
     end = new Date();
     let elapsed = end - begin;
     elapsed /= 1000;
     let sec = Math.round(elapsed);
+
     console.log('End', end);
     console.log('Time taken (sec)', sec);
 }
@@ -184,14 +183,12 @@ function stop() {
 //update the type of search we want the worker to use.
 function change_search() {
     let search = document.getElementById("search").value;
-    console.log(message)
-
-    message.do = 'init';
+    /*message.do = 'init';
     message.config = config;
-    worker.postMessage(message);
+    worker.postMessage(message);*/
 
     message.do = 'set_search';
     message.search = document.getElementById('search').value;
-    console.log(message)
+    console.log(message);
     worker.postMessage(message);
 }

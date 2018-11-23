@@ -1,5 +1,13 @@
+var seed = 2;
+function random() {
+    var x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
+
+
 let begin, end;
 let itr = 20;
+let eu = true;
 
 //Point class, used to refer to a specific square on the grid
 function Point(pos_x, pos_y) {
@@ -52,6 +60,7 @@ function init() {
     snake = place_snake(config.snake_length);
     place_obstacles(config.number_obstacles);
     place_food();
+    // console.log(squares)
     refresh_view();
 }
 
@@ -76,12 +85,23 @@ onmessage = function (event) {
     }
 }
 
+function elapsedTime() {
+    end = new Date();
+    let elapsed = end - begin;
+    elapsed /= 1000;
+    let sec = Math.round(elapsed);
+
+    console.log('End', end);
+    console.log('Time taken (sec)', sec);
+}
 //This function runs repeatedly. Checks if we should move, or search for more moves, and carries out the moves.
 function run() {
     //console.log(config.search)
     //stop at 100 food, for statistical purposes:
-    if (stats.food >= 100) {
+    if (stats.food >= itr) {
         clearTimeout(config.runTimeout);
+        //elapsedTime()
+
         return;
     }
     //moves is a list of moves that the snake is to carry out. IF there are no moves left, then run a search to find more.
@@ -268,13 +288,13 @@ function findpath_a(search_type) {
             //if we have reached food, climb up the tree until the root to obtain path
             var u = 0;
             do {
-                console.l
+
                 moves.unshift(n.point);
                 if (squares[n.point.x][n.point.y] == 0)
                     squares[n.point.x][n.point.y] = 1;
                 n = n.parent;
                 u++;
-                console.log('UU', u)
+                // console.log('UU', u)
             } while (n.parent != null);
 
             break;
@@ -340,9 +360,13 @@ function in_queue(queue, aNode) {
 
 //heuristic_estimate interface, used to keep the calls in findpath_a() simple. Check the search_type,  and call the appropriate helper function.
 function heuristic_estimate(point1, point2, search_type) {
-    switch (search_type) {
-        case "H1":
+    switch (eu) {
+        case true:
+            //console.log('Euclides');
             return Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2));
+        default:
+            //console.log('Man')
+            return Math.abs(point2.x - point1.x) + Math.abs(point2.y - point1.y);
     }
 }
 
@@ -351,10 +375,14 @@ function heuristic_estimate(point1, point2, search_type) {
 function start() {
     //init();
 
-    config.runTimeout = setTimeout(run, 100);
+    config.runTimeout = setTimeout(run, 1000);
     stats.moves = 0;
     stats.food = 0;
     stats.count = 0;
+
+    begin = new Date();
+    console.log('Start', begin)
+
 }
 
 //stop the run function
@@ -384,7 +412,7 @@ function move(new_head) {
     if (squares[new_head.x][new_head.y] == 2) {
         console.log("ENCUENTRA COMIDA", new_head.x, new_head.y);
         snake.unshift(new Point(new_head.x, new_head.y));
-        console.log(snake);
+        //console.log(snake);
 
         place_food();
         stats.food++;
@@ -437,25 +465,49 @@ function place_snake(length) {
 //randomly place obstacles on the grid.
 function place_obstacles(count) {
     for (var c = 0; c < count;) {
-        var random_x = Math.floor(Math.random() * (config.grid_size - 2)) + 1;
-        var random_y = Math.floor(Math.random() * (config.grid_size - 2)) + 1;
+        var random_x = Math.floor(random() * (config.grid_size - 2)) + 1;
+        var random_y = Math.floor(random() * (config.grid_size - 2)) + 1;
         if (squares[random_x][random_y] == 0) {
             squares[random_x][random_y] = 4;
             c++;
         }
     }
 }
-
+let tot = [
+    {x: 9,y:18},
+    {x: 24,y:25},
+    {x: 14,y:29},
+    {x: 28,y:30},
+    {x: 2, y:5},
+    {x: 12,y: 4},
+    {x: 6,y:8},
+    {x: 9,y:18},
+    {x: 24,y:25},
+    {x: 14,y:29},
+    {x: 28,y:30},
+];
 //randomly place a food pellet on the grid.
 function place_food() {
     /*for(var i = 0; i < 10; i++){
         var random_x = Math.floor(Math.random() * (config.grid_size - 2)) + 1;
         var random_y = Math.floor(Math.random() * (config.grid_size - 2)) + 1;
     }*/
+
+
+
     do {
-        var random_x = Math.floor(Math.random() * (config.grid_size - 2)) + 1;
-        var random_y = Math.floor(Math.random() * (config.grid_size - 2)) + 1;
+        var random_x = Math.floor(random() * (config.grid_size - 2)) + 1;
+        var random_y = Math.floor(random() * (config.grid_size - 2)) + 1;
     } while (squares[random_x][random_y] != 0);
+
     squares[random_x][random_y] = 2;
     food = new Point(random_x, random_y);
+
+
+/*
+    let loc = tot.pop();
+
+    console.log(loc);
+    squares[loc.x][loc.y] = 2;
+    food = new Point(loc.x, loc.y);*/
 }
